@@ -5,24 +5,49 @@ import { useCursor, MeshPortalMaterial, CameraControls, Gltf, Text } from '@reac
 import { useRoute, useLocation } from 'wouter'
 import { easing, geometry } from 'maath'
 import { suspend } from 'suspend-react'
+import { FrontSide, Vector3 } from "three";
+import { Ocean } from "react-three-ocean";
 
 extend(geometry)
 const regular = import('@pmndrs/assets/fonts/inter_regular.woff')
 const medium = import('@pmndrs/assets/fonts/inter_medium.woff')
 
 export const App = () => (
-  <Canvas camera={{ fov: 75, position: [0, 0, 20] }} eventSource={document.getElementById('root')} eventPrefix="client">
+  <Canvas camera={{ fov: 75, position: [0, 2, 0] }} eventSource={document.getElementById('root')} eventPrefix="client">
     <color attach="background" args={['#f0f0f0']} />
-    <Frame id="01" name={`pick\nles`} author="Omar Faruq Tawsif" bg="#e4cdac" position={[-1.15, 0, 0]} rotation={[0, 0.5, 0]}>
+    <Frame id="01" name={`pick\nles`} author="Omar Faruq Tawsif" bg="#e4cdac" position={[-1.15, 1.5, 0]} rotation={[0, 0.5, 0]}>
       <Gltf src="pickles_3d_version_of_hyuna_lees_illustration-transformed.glb" scale={8} position={[0, -0.7, -2]} />
     </Frame>
-    <Frame id="02" name="tea" author="Omar Faruq Tawsif">
+    <Frame id="02" name="tea" author="Omar Faruq Tawsif" position={[0, 1.5, 0]}>
       <Gltf src="fiesta_tea-transformed.glb" position={[0, -2, -3]} />
     </Frame>
-    <Frame id="03" name="still" author="Omar Faruq Tawsif" bg="#d1d1ca" position={[1.15, 0, 0]} rotation={[0, -0.5, 0]}>
+    <Frame id="03" name="still" author="Omar Faruq Tawsif" bg="#d1d1ca" position={[1.15, 1.5, 0]} rotation={[0, -0.5, 0]}>
       <Gltf src="still_life_based_on_heathers_artwork-transformed.glb" scale={2} position={[0, -0.8, -4]} />
     </Frame>
     <Rig />
+    <Ocean
+        dimensions={[ 10000, 10000 ]}
+        normals="https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/waternormals.jpg"
+        distortionScale={3.7}
+        size={10}
+        waterColor="#001e0f"
+        options={{ // defaults
+          clipBias: 0,
+          alpha: 1,
+          waterNormals: null, // automatically set to provided texture from "normals" prop
+          sunDirection: new Vector3(0.70707, 0.70707, 0),
+          sunColor: 0xffffff,
+          waterColor: 0x001e0f,
+          eye: new Vector3(0, 1, 0),
+          distortionScale: 3.7, // automatically set from "distortionScale" prop
+          side: FrontSide,
+          fog: false
+        }}>
+        {(water) => {
+          console.log(water); // children function is passed `Water` instance for manual manipulation (e.g. sunDirection, animated waterColor, etc.)
+          return null;
+        }}
+       </Ocean>
   </Canvas>
 )
 
